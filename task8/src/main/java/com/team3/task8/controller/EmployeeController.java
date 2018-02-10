@@ -40,7 +40,11 @@ public class EmployeeController {
         System.out.println("state: " + payload.get("state"));
         System.out.println("zip: " + payload.get("zip"));
         System.out.println("email: " + payload.get("email"));
-        System.out.println("cash: " + payload.get("cash"));
+        try {
+            System.out.println("cash: " + payload.get("cash"));
+        } catch (Exception e) {
+            System.out.println("No cash provided");
+        }
         System.out.println("username: " + payload.get("username"));
         System.out.println("password: " + payload.get("password"));
 
@@ -51,7 +55,12 @@ public class EmployeeController {
         String state = (String) payload.get("state");
         String zip = (String) payload.get("zip");
         String email = (String) payload.get("email");
-        String cash = (String) payload.get("cash");
+        String cash;
+        try {
+            cash = (String) payload.get("cash");
+        } catch (Exception e) {
+            cash = "0";
+        }
         String username = (String) payload.get("username");
         String password = (String) payload.get("password");
 

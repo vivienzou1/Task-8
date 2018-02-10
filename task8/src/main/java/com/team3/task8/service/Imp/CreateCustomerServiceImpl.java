@@ -56,22 +56,30 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
         }
 
         if (session.getAttribute("username") == null) {
+
             // Not Logged In
             result.put("message", "You are not currently logged in");
             httpStatus = HttpStatus.FORBIDDEN;
+
         } else if (!userRepository.findByUsername((String) session.getAttribute("username")).getRole().equals("Employee")) {
+
             // Not employee
             result.put("message", "You must be an employee to perform this action");
             httpStatus = HttpStatus.FORBIDDEN;
+
         } else if (userRepository.findByUsername(username) != null) {
+
             // Duplicate username
             result.put("message", "The input you provided is not valid");
             httpStatus = HttpStatus.FORBIDDEN;
+
         } else {
+
             // Success Case
             User user = new User(fname, lname, address, city, state, zip, email, cash, "customer", username, password);
             userRepository.save(user);
-            result.put("message", "fname was registered successfully");
+            result.put("message", fname + " was registered successfully");
+
         }
 
         return new ResponseEntity<>(result, httpStatus);

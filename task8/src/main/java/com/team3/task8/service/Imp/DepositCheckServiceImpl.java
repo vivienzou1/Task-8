@@ -24,18 +24,12 @@ import java.text.DecimalFormat;
 public class DepositCheckServiceImpl implements DepositCheckService {
 
     private final UserRepository userRepository;
-    private final FundRepository fundRepository;
-    private final FundHoldRepository fundHoldRepository;
     private final ParamCheck paramCheck;
 
     @Autowired
     public DepositCheckServiceImpl(UserRepository userRepository,
-                                   FundRepository fundRepository,
-                                   FundHoldRepository fundHoldRepository,
                                    ParamCheck paramCheck) {
         this.userRepository = userRepository;
-        this.fundRepository = fundRepository;
-        this.fundHoldRepository = fundHoldRepository;
         this.paramCheck = paramCheck;
     }
 
@@ -53,33 +47,30 @@ public class DepositCheckServiceImpl implements DepositCheckService {
         }
 
         if (session.getAttribute("username") == null) {
+
             // Not Logged In
             result.put("message", "You are not currently logged in");
             httpStatus = HttpStatus.FORBIDDEN;
+
         } else if (!userRepository.findByUsername((String) session.getAttribute("username")).getRole().equals("Employee")) {
+
             // Not employee
             result.put("message", "You must be an employee to perform this action");
             httpStatus = HttpStatus.FORBIDDEN;
+
         } else {
+
             // Success Case
             User user = userRepository.findByUsername(username);
-            double prevCash;
-            double cashDouble;
-            try {
-                prevCash = Double.parseDouble(user.getCash());
-                cashDouble = Double.parseDouble(cash);
-
-            } catch (NumberFormatException e) {
-                // ???
-                httpStatus = HttpStatus.BAD_REQUEST;
-                return new ResponseEntity<>(result, httpStatus);
-            }
+            double prevCash = Double.parseDouble(user.getCash());
+            double cashDouble = Double.parseDouble(cash);
 
             DecimalFormat df = new DecimalFormat("#.##");
             String newCash = df.format(prevCash + cashDouble);
 
             userRepository.updateCashByUsername(newCash, username);
             result.put("message", "The check was successfully deposited");
+
         }
 
         return new ResponseEntity<>(result, httpStatus);

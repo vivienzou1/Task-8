@@ -58,6 +58,7 @@ public class BuyFundServiceImpl implements BuyFundService {
             // Not Logged In
             result.put("message", "You are not currently logged in");
             httpStatus = HttpStatus.FORBIDDEN;
+
         } else {
 
             User user = userRepository.findByUsername((String) session.getAttribute("username"));
@@ -67,6 +68,7 @@ public class BuyFundServiceImpl implements BuyFundService {
                 // Not customer
                 result.put("message", "You must be an customer to perform this action");
                 httpStatus = HttpStatus.FORBIDDEN;
+
             } else {
 
                 double prevCash = Double.parseDouble(user.getCash());
@@ -74,11 +76,24 @@ public class BuyFundServiceImpl implements BuyFundService {
 
                 Fund fund = fundRepository.findBySymbol(symbol);
 
-                if (!paramCheck.isMultiple(prevCash, cashDouble)) {
+                if (fund == null) {
+
+                    // Fund doesn’t exist
+                    result.put("message", "The fund you provided does not exist");
+                    httpStatus = HttpStatus.FORBIDDEN;
+
+                } else if (prevCash < cashDouble) {
 
                     // Not enough cash in account
                     result.put("message", "You don’t have enough cash in your account to make this purchase");
                     httpStatus = HttpStatus.FORBIDDEN;
+
+                } else if (!paramCheck.isMultiple(prevCash, cashDouble)) {
+
+                    // Not enough cash provided
+                    result.put("message", "You didn’t provide enough cash to make this purchase");
+                    httpStatus = HttpStatus.FORBIDDEN;
+
                 } else {
 
                     // Success Case

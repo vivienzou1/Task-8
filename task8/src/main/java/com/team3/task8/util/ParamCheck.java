@@ -34,10 +34,6 @@ public class ParamCheck {
 
     public static boolean isMultiple(double d1, double d2) {
 
-        if (d1 < d2) {
-            return false;
-        }
-
         double threshold = 1E-6;
 
         if (Math.abs(d2 - (int)(d1 / d2) * d2) > threshold) {
