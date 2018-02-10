@@ -1,19 +1,10 @@
 package com.team3.task8.controller;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.team3.task8.domain.Fund;
-import com.team3.task8.domain.FundHold;
-import com.team3.task8.domain.User;
-import com.team3.task8.repositories.FundHoldRepository;
-import com.team3.task8.repositories.FundRepository;
-import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.BuyFundService;
 import com.team3.task8.service.RequestCheckService;
 import com.team3.task8.service.SellFundService;
 import com.team3.task8.service.ViewPortfolioService;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,32 +12,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
 public class CustomerController {
 
-    private final UserRepository userRepository;
-    private final FundRepository fundRepository;
-    private final FundHoldRepository fundHoldRepository;
     private final BuyFundService buyFundService;
     private final SellFundService sellFundService;
     private final RequestCheckService requestCheckService;
     private final ViewPortfolioService viewPortfolioService;
 
     @Autowired
-    public CustomerController(UserRepository userRepository,
-                              FundRepository fundRepository,
-                              FundHoldRepository fundHoldRepository,
-                              BuyFundService buyFundService,
+    public CustomerController(BuyFundService buyFundService,
                               SellFundService sellFundService,
                               RequestCheckService requestCheckService,
                               ViewPortfolioService viewPortfolioService) {
-        this.userRepository = userRepository;
-        this.fundRepository = fundRepository;
-        this.fundHoldRepository = fundHoldRepository;
         this.buyFundService = buyFundService;
         this.sellFundService = sellFundService;
         this.requestCheckService = requestCheckService;
@@ -55,6 +35,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/viewPortfolio", method = RequestMethod.GET)
     public ResponseEntity<Object> viewPortfolio(HttpSession session) {
+
         return viewPortfolioService.viewPortfolio(session);
     }
 

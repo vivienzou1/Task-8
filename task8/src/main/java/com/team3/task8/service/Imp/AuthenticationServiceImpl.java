@@ -1,16 +1,10 @@
 package com.team3.task8.service.Imp;
 
 
-import com.team3.task8.domain.Fund;
-import com.team3.task8.domain.FundHold;
 import com.team3.task8.domain.User;
-import com.team3.task8.repositories.FundHoldRepository;
-import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.AuthenticationService;
-import com.team3.task8.service.BuyFundService;
 import net.minidev.json.JSONObject;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
 
+        // param check ???
+
         User user = userRepository.findByUsername(username);
 
         if (user == null || !password.equals(user.getPassword())) {
@@ -46,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         } else {
             // Success Case
             session.setAttribute("username", username);
-            result.put("message", "Welcome first name");
+            result.put("message", "Welcome " + user.getFname());
         }
 
         return new ResponseEntity<>(result, httpStatus);

@@ -21,11 +21,11 @@ public class Fund {
 
     private String symbol;
 
-    private double price;
+    private String price;
 
     public Fund(String name,
                 String symbol,
-                double price) {
+                String price) {
         this.name = name;
         this.symbol = symbol;
         this.price = price;

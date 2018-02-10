@@ -19,15 +19,15 @@ public class FundHold {
 
     private String name;
 
-    private double shares;
+    private String shares;
 
-    private double price;
+    private String price;
 
     private String username;
 
     public FundHold(String name,
-                    double shares,
-                    double price,
+                    String shares,
+                    String price,
                     String username) {
         this.name = name;
         this.shares = shares;

@@ -33,7 +33,7 @@ public class User {
 
     private String email;
 
-    private double cash;
+    private String cash;
 
     private String role;
 
@@ -44,7 +44,7 @@ public class User {
                 String state,
                 String zip,
                 String email,
-                double cash,
+                String cash,
                 String role,
                 String username,
                 String password) {

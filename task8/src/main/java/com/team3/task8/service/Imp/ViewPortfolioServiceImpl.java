@@ -40,18 +40,18 @@ public class ViewPortfolioServiceImpl implements ViewPortfolioService {
         List<JSONObject> funds = new ArrayList<JSONObject>();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        // Parameter invalid ???
-//        httpStatus = HttpStatus.BAD_REQUEST;
-
         if (session.getAttribute("username") == null) {
+
             // Not Logged In
             result.put("message", "You are not currently logged in");
             httpStatus = HttpStatus.FORBIDDEN;
         } else {
+
             // No Funds
             User user = userRepository.findByUsername((String) session.getAttribute("username"));
 
             if (!user.getRole().equals("customer")) {
+
                 // Not customer
                 result.put("message", "You must be a customer to perform this action");
                 httpStatus = HttpStatus.FORBIDDEN;
@@ -59,6 +59,7 @@ public class ViewPortfolioServiceImpl implements ViewPortfolioService {
                 result.put("message", "You don’t have any funds in your Portfolio");
                 httpStatus = HttpStatus.FORBIDDEN;
             } else {
+
                 // Success Case
                 result.put("message", "The action was successful");
                 result.put("cash", "current balance in account");

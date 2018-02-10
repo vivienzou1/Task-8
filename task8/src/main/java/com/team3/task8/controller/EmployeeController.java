@@ -1,13 +1,7 @@
 package com.team3.task8.controller;
 
-import com.team3.task8.domain.Fund;
-import com.team3.task8.domain.User;
-import com.team3.task8.repositories.FundRepository;
-import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.*;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,29 +9,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
 public class EmployeeController {
 
-    private final UserRepository userRepository;
-    private final FundRepository fundRepository;
     private final CreateCustomerService createCustomerService;
     private final DepositCheckService depositCheckService;
     private final CreateFundService createFundService;
     private final TransitionDayService transitionDayService;
 
     @Autowired
-    public EmployeeController(UserRepository userRepository,
-                              FundRepository fundRepository,
-                              CreateCustomerService createCustomerService,
+    public EmployeeController(CreateCustomerService createCustomerService,
                               DepositCheckService depositCheckService,
                               CreateFundService createFundService,
                               TransitionDayService transitionDayService) {
-        this.userRepository = userRepository;
-        this.fundRepository = fundRepository;
         this.createCustomerService = createCustomerService;
         this.depositCheckService = depositCheckService;
         this.createFundService = createFundService;
@@ -46,6 +32,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/createCustomerAccount", method = RequestMethod.POST)
     public ResponseEntity<Object> createCustomerAccount(@RequestBody Map<String, Object> payload, HttpSession session) {
+
         System.out.println("fname: " + payload.get("fname"));
         System.out.println("lname: " + payload.get("lname"));
         System.out.println("address: " + payload.get("address"));
@@ -73,6 +60,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/depositCheck", method = RequestMethod.POST)
     public ResponseEntity<Object> depositCheck(@RequestBody Map<String, Object> payload, HttpSession session) {
+
         System.out.println("username: " + payload.get("username"));
         System.out.println("cash: " + payload.get("cash"));
 
@@ -84,6 +72,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/createFund", method = RequestMethod.POST)
     public ResponseEntity<Object> createFund(@RequestBody Map<String, Object> payload, HttpSession session) {
+
         System.out.println("name: " + payload.get("name"));
         System.out.println("symbol: " + payload.get("symbol"));
         System.out.println("initial_value: " + payload.get("initial_value"));
@@ -95,9 +84,9 @@ public class EmployeeController {
         return createFundService.createFund(session, name, symbol, initial_value);
     }
 
-    // unfinished
     @RequestMapping(value = "/transitionDay", method = RequestMethod.POST)
     public ResponseEntity<Object> transitionDay(HttpSession session) {
+
         return transitionDayService.transitionDay(session);
     }
 }

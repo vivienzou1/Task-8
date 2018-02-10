@@ -7,6 +7,7 @@ import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.CreateCustomerService;
 import com.team3.task8.service.CreateFundService;
+import com.team3.task8.util.ParamCheck;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,15 @@ public class CreateFundServiceImpl implements CreateFundService {
 
     private final UserRepository userRepository;
     private final FundRepository fundRepository;
+    private final ParamCheck paramCheck;
 
     @Autowired
-    public CreateFundServiceImpl(UserRepository userRepository, FundRepository fundRepository) {
+    public CreateFundServiceImpl(UserRepository userRepository,
+                                 FundRepository fundRepository,
+                                 ParamCheck paramCheck) {
         this.userRepository = userRepository;
         this.fundRepository = fundRepository;
+        this.paramCheck = paramCheck;
     }
 
     @Override
@@ -33,26 +38,28 @@ public class CreateFundServiceImpl implements CreateFundService {
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        // Parameter invalid
-        double initialValue = 0;
-        try {
-            initialValue = Double.parseDouble(initial_value);
-        } catch (NumberFormatException e) {
+        // param check ???
+
+        // cash not double or more than two decimals
+        if (!paramCheck.isTwoDecimal(initial_value)) {
             httpStatus = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(result, httpStatus);
         }
 
         if (session.getAttribute("username") == null) {
+
             // Not Logged In
             result.put("message", "You are not currently logged in");
             httpStatus = HttpStatus.FORBIDDEN;
         } else if (!userRepository.findByUsername((String) session.getAttribute("username")).getRole().equals("Employee")) {
+
             // Not employee
             result.put("message", "You must be an employee to perform this action");
             httpStatus = HttpStatus.FORBIDDEN;
         } else {
+
             // Success Case
-            Fund fund = new Fund(name, symbol, initialValue);
+            Fund fund = new Fund(name, symbol, initial_value);
             fundRepository.save(fund);
             result.put("message", "The fund was successfully created");
         }

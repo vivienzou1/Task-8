@@ -6,6 +6,7 @@ import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.BuyFundService;
 import com.team3.task8.service.CreateCustomerService;
+import com.team3.task8.util.ParamCheck;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +21,15 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
 
     private final UserRepository userRepository;
     private final FundRepository fundRepository;
+    private final ParamCheck paramCheck;
 
     @Autowired
-    public CreateCustomerServiceImpl(UserRepository userRepository, FundRepository fundRepository) {
+    public CreateCustomerServiceImpl(UserRepository userRepository,
+                                     FundRepository fundRepository,
+                                     ParamCheck paramCheck) {
         this.userRepository = userRepository;
         this.fundRepository = fundRepository;
+        this.paramCheck = paramCheck;
     }
 
     @Override
@@ -42,11 +47,10 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        // Parameter invalid
-        double cashDouble = 0;
-        try {
-            cashDouble = Double.parseDouble(cash);
-        } catch (NumberFormatException e) {
+        // param check ???
+
+        // cash not double or more than two decimals
+        if (!paramCheck.isTwoDecimal(cash)) {
             httpStatus = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(result, httpStatus);
         }
@@ -65,7 +69,7 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
             httpStatus = HttpStatus.FORBIDDEN;
         } else {
             // Success Case
-            User user = new User(fname, lname, address, city, state, zip, email, cashDouble, "customer", username, password);
+            User user = new User(fname, lname, address, city, state, zip, email, cash, "customer", username, password);
             userRepository.save(user);
             result.put("message", "fname was registered successfully");
         }

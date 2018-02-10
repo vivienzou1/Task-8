@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Random;
 
@@ -38,19 +39,23 @@ public class TransitionDayServiceImpl implements TransitionDayService {
         HttpStatus httpStatus = HttpStatus.OK;
 
         if (session.getAttribute("username") == null) {
+
             // Not Logged In
             result.put("message", "You are not currently logged in");
             httpStatus = HttpStatus.FORBIDDEN;
         } else if (!userRepository.findByUsername((String) session.getAttribute("username")).getRole().equals("Employee")) {
+
             // Not employee
             result.put("message", "You must be an employee to perform this action");
             httpStatus = HttpStatus.FORBIDDEN;
         } else {
+
             // Success Case
             List<Fund> funds = fundRepository.findAll();
             for (Fund fund : funds) {
-                double curPrice = fund.getPrice();
-                double newPrice = newPrice(curPrice);
+                double curPrice = Double.parseDouble(fund.getPrice());
+                DecimalFormat df = new DecimalFormat("#.##");
+                String newPrice = df.format(newPrice(curPrice));
                 fundRepository.updatePriceBySymbol(newPrice, fund.getSymbol());
             }
             result.put("message", "The fund prices have been successfully recalculated");
