@@ -23,11 +23,15 @@ public class FundHold {
 
     private double price;
 
+    private String username;
+
     public FundHold(String name,
                     double shares,
-                    double price) {
+                    double price,
+                    String username) {
         this.name = name;
         this.shares = shares;
         this.price = price;
+        this.username = username;
     }
 }

@@ -55,14 +55,14 @@ public class ViewPortfolioServiceImpl implements ViewPortfolioService {
                 // Not customer
                 result.put("message", "You must be a customer to perform this action");
                 httpStatus = HttpStatus.FORBIDDEN;
-            } else if (user.getFundHolds() == null && user.getFundHolds().size() == 0) {
+            } else if (fundHoldRepository.findByUsername(user.getUsername()).size() == 0) {
                 result.put("message", "You don’t have any funds in your Portfolio");
                 httpStatus = HttpStatus.FORBIDDEN;
             } else {
                 // Success Case
-                result.put("message", "The fund has been successfully purchased");
+                result.put("message", "The action was successful");
                 result.put("cash", "current balance in account");
-                for (FundHold fundhold : user.getFundHolds()) {
+                for (FundHold fundhold : fundHoldRepository.findByUsername(user.getUsername())) {
                     JSONObject fund = new JSONObject();
                     fund.put("name", fundhold.getName());
                     fund.put("shares", fundhold.getShares());

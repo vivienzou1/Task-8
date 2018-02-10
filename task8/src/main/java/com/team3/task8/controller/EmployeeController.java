@@ -4,10 +4,7 @@ import com.team3.task8.domain.Fund;
 import com.team3.task8.domain.User;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
-import com.team3.task8.service.CreateCustomerService;
-import com.team3.task8.service.CreateFundService;
-import com.team3.task8.service.RequestCheckService;
-import com.team3.task8.service.TransitionDayService;
+import com.team3.task8.service.*;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +25,7 @@ public class EmployeeController {
     private final UserRepository userRepository;
     private final FundRepository fundRepository;
     private final CreateCustomerService createCustomerService;
-    private final RequestCheckService requestCheckService;
+    private final DepositCheckService depositCheckService;
     private final CreateFundService createFundService;
     private final TransitionDayService transitionDayService;
 
@@ -36,13 +33,13 @@ public class EmployeeController {
     public EmployeeController(UserRepository userRepository,
                               FundRepository fundRepository,
                               CreateCustomerService createCustomerService,
-                              RequestCheckService requestCheckService,
+                              DepositCheckService depositCheckService,
                               CreateFundService createFundService,
                               TransitionDayService transitionDayService) {
         this.userRepository = userRepository;
         this.fundRepository = fundRepository;
         this.createCustomerService = createCustomerService;
-        this.requestCheckService = requestCheckService;
+        this.depositCheckService = depositCheckService;
         this.createFundService = createFundService;
         this.transitionDayService = transitionDayService;
     }
@@ -82,7 +79,7 @@ public class EmployeeController {
         String username = (String) payload.get("username");
         String cash = (String) payload.get("cash");
 
-        return requestCheckService.requestCheck(session, cash);
+        return depositCheckService.depositCheck(session, username, cash);
     }
 
     @RequestMapping(value = "/createFund", method = RequestMethod.POST)
@@ -98,6 +95,7 @@ public class EmployeeController {
         return createFundService.createFund(session, name, symbol, initial_value);
     }
 
+    // unfinished
     @RequestMapping(value = "/transitionDay", method = RequestMethod.POST)
     public ResponseEntity<Object> transitionDay(HttpSession session) {
         return transitionDayService.transitionDay(session);

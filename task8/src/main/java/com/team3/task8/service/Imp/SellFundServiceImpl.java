@@ -56,8 +56,7 @@ public class SellFundServiceImpl implements SellFundService {
                 httpStatus = HttpStatus.FORBIDDEN;
             } else {
                 Fund fund = fundRepository.findBySymbol(symbol);
-                FundHold fundHold = fundHoldRepository.findByName(fund.getName());
-                FundHold userFundHold = userRepository.findByUsernameAndFundHoldsEquals(user.getUsername(), fundHold);
+                FundHold userFundHold = fundHoldRepository.findByUsernameAndName(user.getUsername(), fund.getName());
                 if (userFundHold == null || userFundHold.getShares() < Double.parseDouble(numShares)) {
                     // Not enough shares
                     result.put("message", "You don’t have that many shares in your portfolio");

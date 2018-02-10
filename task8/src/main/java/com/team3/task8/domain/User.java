@@ -37,9 +37,6 @@ public class User {
 
     private String role;
 
-    @OneToMany
-    List<FundHold> fundHolds;
-
     public User(String fname,
                 String lname,
                 String address,
@@ -62,6 +59,5 @@ public class User {
         this.role = role;
         this.username = username;
         this.password = password;
-        fundHolds = new ArrayList<>();
     }
 }
