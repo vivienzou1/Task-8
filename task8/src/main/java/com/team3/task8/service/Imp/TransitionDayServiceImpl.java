@@ -1,6 +1,7 @@
 package com.team3.task8.service.Imp;
 
 
+import com.team3.task8.domain.Fund;
 import com.team3.task8.domain.User;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
@@ -14,9 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Random;
 
 
 @Service
+@Transactional
 public class TransitionDayServiceImpl implements TransitionDayService {
 
     private final UserRepository userRepository;
@@ -33,9 +37,6 @@ public class TransitionDayServiceImpl implements TransitionDayService {
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        // Parameter invalid ???
-//        httpStatus = HttpStatus.BAD_REQUEST;
-
         if (session.getAttribute("username") == null) {
             // Not Logged In
             result.put("message", "You are not currently logged in");
@@ -46,10 +47,31 @@ public class TransitionDayServiceImpl implements TransitionDayService {
             httpStatus = HttpStatus.FORBIDDEN;
         } else {
             // Success Case
-            // update price
+            List<Fund> funds = fundRepository.findAll();
+            for (Fund fund : funds) {
+                double curPrice = fund.getPrice();
+                double newPrice = newPrice(curPrice);
+                fundRepository.updatePriceBySymbol(newPrice, fund.getSymbol());
+            }
             result.put("message", "The fund prices have been successfully recalculated");
         }
 
         return new ResponseEntity<>(result, httpStatus);
+    }
+
+    private double newPrice(double price) {
+        double newPrice;
+        double fluctuate;
+        while (true) {
+            fluctuate = (int) (Math.random() * (price * 20) - price * 10) / 100;
+            newPrice = price + fluctuate;
+            if (newPrice > 0) {
+                break;
+            }
+        }
+        System.out.println("prev price: " + price);
+        System.out.println("fluctuate: " + fluctuate);
+        System.out.println("new price: " + newPrice);
+        return newPrice;
     }
 }

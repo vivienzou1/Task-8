@@ -72,12 +72,12 @@ public class BuyFundServiceImpl implements BuyFundService {
                 FundHold fundHold;
                 if (fundHoldRepository.findByUsernameAndName(user.getUsername(), fund.getName()) == null) {
                     fundHold = new FundHold(fund.getName(), shares, price, user.getUsername());
+                    fundHoldRepository.save(fundHold);
                 } else {
                     fundHold = fundHoldRepository.findByUsernameAndName(user.getUsername(), fund.getName());
                     double prevShare = fundHold.getShares();
                     fundHoldRepository.updateSharesById(prevShare + shares, fund.getId());
                 }
-                fundHoldRepository.save(fundHold);
                 userRepository.updateCashByUsername(prevCash - cashDouble, user.getUsername());
                 result.put("message", "The fund has been successfully purchased");
             }

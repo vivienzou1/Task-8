@@ -33,5 +33,7 @@ public class FundHold {
         this.shares = shares;
         this.price = price;
         this.username = username;
+
+
     }
 }
