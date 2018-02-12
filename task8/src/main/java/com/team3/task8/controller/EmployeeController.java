@@ -1,5 +1,8 @@
 package com.team3.task8.controller;
 
+import com.team3.task8.dto.CreateCustomerForm;
+import com.team3.task8.dto.CreateFundForm;
+import com.team3.task8.dto.DepositCheckForm;
 import com.team3.task8.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -31,70 +35,52 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/createCustomerAccount", method = RequestMethod.POST)
-    public ResponseEntity<Object> createCustomerAccount(@RequestBody Map<String, Object> payload, HttpSession session) {
+    public ResponseEntity<Object> createCustomerAccount(@RequestBody @Valid CreateCustomerForm createCustomerForm, HttpSession session) {
 
-        System.out.println("fname: " + payload.get("fname"));
-        System.out.println("lname: " + payload.get("lname"));
-        System.out.println("address: " + payload.get("address"));
-        System.out.println("city: " + payload.get("city"));
-        System.out.println("state: " + payload.get("state"));
-        System.out.println("zip: " + payload.get("zip"));
-        System.out.println("email: " + payload.get("email"));
+        System.out.println("/createCustomerAccount");
+        System.out.println("fname: " + createCustomerForm.getFname());
+        System.out.println("lname: " + createCustomerForm.getLname());
+        System.out.println("address: " + createCustomerForm.getAddress());
+        System.out.println("city: " + createCustomerForm.getCity());
+        System.out.println("state: " + createCustomerForm.getState());
+        System.out.println("zip: " + createCustomerForm.getZip());
+        System.out.println("email: " + createCustomerForm.getEmail());
         try {
-            System.out.println("cash: " + payload.get("cash"));
+            System.out.println("cash: " + createCustomerForm.getCash());
         } catch (Exception e) {
             System.out.println("No cash provided");
         }
-        System.out.println("username: " + payload.get("username"));
-        System.out.println("password: " + payload.get("password"));
+        System.out.println("username: " + createCustomerForm.getUsername());
+        System.out.println("password: " + createCustomerForm.getPassword());
 
-        String fname = (String) payload.get("fname");
-        String lname = (String) payload.get("lname");
-        String address = (String) payload.get("address");
-        String city = (String) payload.get("city");
-        String state = (String) payload.get("state");
-        String zip = (String) payload.get("zip");
-        String email = (String) payload.get("email");
-        String cash;
-        try {
-            cash = (String) payload.get("cash");
-        } catch (Exception e) {
-            cash = "0";
-        }
-        String username = (String) payload.get("username");
-        String password = (String) payload.get("password");
-
-        return createCustomerService.createCustomer(session, fname, lname, address, city, state, zip, email, cash, username, password);
+        return createCustomerService.createCustomer(session, createCustomerForm);
     }
 
     @RequestMapping(value = "/depositCheck", method = RequestMethod.POST)
-    public ResponseEntity<Object> depositCheck(@RequestBody Map<String, Object> payload, HttpSession session) {
+    public ResponseEntity<Object> depositCheck(@RequestBody @Valid DepositCheckForm depositCheckForm, HttpSession session) {
 
-        System.out.println("username: " + payload.get("username"));
-        System.out.println("cash: " + payload.get("cash"));
+        System.out.println("/depositCheck");
+        System.out.println("username: " + depositCheckForm.getUsername());
+        System.out.println("cash: " + depositCheckForm.getCash());
 
-        String username = (String) payload.get("username");
-        String cash = (String) payload.get("cash");
-
-        return depositCheckService.depositCheck(session, username, cash);
+        return depositCheckService.depositCheck(session, depositCheckForm);
     }
 
     @RequestMapping(value = "/createFund", method = RequestMethod.POST)
-    public ResponseEntity<Object> createFund(@RequestBody Map<String, Object> payload, HttpSession session) {
+    public ResponseEntity<Object> createFund(@RequestBody @Valid CreateFundForm createFundForm, HttpSession session) {
 
-        System.out.println("name: " + payload.get("name"));
-        System.out.println("symbol: " + payload.get("symbol"));
-        System.out.println("initial_value: " + payload.get("initial_value"));
+        System.out.println("/createFund");
+        System.out.println("name: " + createFundForm.getName());
+        System.out.println("symbol: " + createFundForm.getSymbol());
+        System.out.println("initial_value: " + createFundForm.getInitialValue());
 
-        String name = (String) payload.get("name");
-        String symbol = (String) payload.get("symbol");
-        String initial_value = (String) payload.get("initial_value");
-
-        return createFundService.createFund(session, name, symbol, initial_value);
+        return createFundService.createFund(session, createFundForm);
     }
 
     @RequestMapping(value = "/transitionDay", method = RequestMethod.POST)
     public ResponseEntity<Object> transitionDay(HttpSession session) {
+
+        System.out.println("/transitionDay");
 
         return transitionDayService.transitionDay(session);
     }

@@ -3,6 +3,7 @@ package com.team3.task8.service.Imp;
 
 import com.team3.task8.domain.Fund;
 import com.team3.task8.domain.User;
+import com.team3.task8.dto.CreateFundForm;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.CreateCustomerService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,17 +36,11 @@ public class CreateFundServiceImpl implements CreateFundService {
     }
 
     @Override
-    public ResponseEntity<Object> createFund(HttpSession session, String name, String symbol, String initial_value) {
+    @Transactional
+    public ResponseEntity<Object> createFund(HttpSession session, CreateFundForm createFundForm) {
+
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
-
-        // param check ???
-
-        // cash not double or more than two decimals
-        if (!paramCheck.isTwoDecimal(initial_value)) {
-            httpStatus = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(result, httpStatus);
-        }
 
         if (session.getAttribute("username") == null) {
 
@@ -61,7 +57,7 @@ public class CreateFundServiceImpl implements CreateFundService {
         } else {
 
             // Success Case
-            Fund fund = new Fund(name, symbol, initial_value);
+            Fund fund = new Fund(createFundForm.getName(), createFundForm.getSymbol(), createFundForm.getInitialValue());
             fundRepository.save(fund);
             result.put("message", "The fund was successfully created");
 

@@ -2,6 +2,7 @@ package com.team3.task8.service.Imp;
 
 
 import com.team3.task8.domain.User;
+import com.team3.task8.dto.DepositCheckForm;
 import com.team3.task8.repositories.FundHoldRepository;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
@@ -20,7 +21,6 @@ import java.text.DecimalFormat;
 
 
 @Service
-@Transactional
 public class DepositCheckServiceImpl implements DepositCheckService {
 
     private final UserRepository userRepository;
@@ -34,17 +34,11 @@ public class DepositCheckServiceImpl implements DepositCheckService {
     }
 
     @Override
-    public ResponseEntity<Object> depositCheck(HttpSession session, String username, String cash) {
+    @Transactional
+    public ResponseEntity<Object> depositCheck(HttpSession session, DepositCheckForm depositCheckForm) {
+
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
-
-        // param check ???
-
-        // cash not double or more than two decimals
-        if (!paramCheck.isTwoDecimal(cash)) {
-            httpStatus = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(result, httpStatus);
-        }
 
         if (session.getAttribute("username") == null) {
 
@@ -61,14 +55,15 @@ public class DepositCheckServiceImpl implements DepositCheckService {
         } else {
 
             // Success Case
-            User user = userRepository.findByUsername(username);
+            User user = userRepository.findByUsername(depositCheckForm.getUsername());
+
             double prevCash = Double.parseDouble(user.getCash());
-            double cashDouble = Double.parseDouble(cash);
+            double cashDouble = Double.parseDouble(depositCheckForm.getCash());
 
             DecimalFormat df = new DecimalFormat("#.##");
             String newCash = df.format(prevCash + cashDouble);
 
-            userRepository.updateCashByUsername(newCash, username);
+            userRepository.updateCashByUsername(newCash, depositCheckForm.getUsername());
             result.put("message", "The check was successfully deposited");
 
         }

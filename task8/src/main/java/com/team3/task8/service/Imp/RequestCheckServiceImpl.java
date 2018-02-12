@@ -2,6 +2,7 @@ package com.team3.task8.service.Imp;
 
 
 import com.team3.task8.domain.User;
+import com.team3.task8.dto.RequestCheckForm;
 import com.team3.task8.repositories.FundHoldRepository;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
@@ -33,19 +34,12 @@ public class RequestCheckServiceImpl implements RequestCheckService {
     }
 
     @Override
-    public ResponseEntity<Object> requestCheck(HttpSession session, String cash) {
+    @Transactional
+    public ResponseEntity<Object> requestCheck(HttpSession session, RequestCheckForm requestCheckForm) {
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        // param check ???
-
-        // cash not double or more than two decimals
-        if (!paramCheck.isTwoDecimal(cash)) {
-            httpStatus = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(result, httpStatus);
-        }
-
-        double cashDouble = Double.parseDouble(cash);
+        double cashDouble = Double.parseDouble(requestCheckForm.getCashValue());
 
         if (session.getAttribute("username") == null) {
 

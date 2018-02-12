@@ -4,6 +4,7 @@ package com.team3.task8.service.Imp;
 import com.team3.task8.domain.Fund;
 import com.team3.task8.domain.FundHold;
 import com.team3.task8.domain.User;
+import com.team3.task8.dto.SellFundForm;
 import com.team3.task8.repositories.FundHoldRepository;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
@@ -42,19 +43,13 @@ public class SellFundServiceImpl implements SellFundService {
     }
 
     @Override
-    public ResponseEntity<Object> sellFund(HttpSession session, String symbol, String numShares) {
+    @Transactional
+    public ResponseEntity<Object> sellFund(HttpSession session, SellFundForm sellFundForm) {
+
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
 
-        // param check ???
-
-        // cash not double or more than two decimals
-        if (!paramCheck.isInteger(numShares)) {
-            httpStatus = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(result, httpStatus);
-        }
-
-        int shares = Integer.parseInt(numShares);
+        int shares = Integer.parseInt(sellFundForm.getNumShares());
 
         if (session.getAttribute("username") == null) {
 
@@ -74,7 +69,7 @@ public class SellFundServiceImpl implements SellFundService {
 
             } else {
 
-                Fund fund = fundRepository.findBySymbol(symbol);
+                Fund fund = fundRepository.findBySymbol(sellFundForm.getSymbol());
 
                 if (fund == null) {
 
@@ -99,7 +94,9 @@ public class SellFundServiceImpl implements SellFundService {
                         double price = Double.parseDouble(fund.getPrice());
                         double cash = price * shares;
                         int prevShare = Integer.parseInt(fundHold.getShares());
+
                         fundHoldRepository.updateSharesById(String.valueOf(prevShare - shares), fund.getId());
+
                         DecimalFormat df = new DecimalFormat("#.##");
                         userRepository.updateCashByUsername(df.format(prevCash + cash), user.getUsername());
 

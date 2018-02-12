@@ -1,5 +1,6 @@
 package com.team3.task8.controller;
 
+import com.team3.task8.dto.LoginForm;
 import com.team3.task8.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -22,20 +24,19 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<Object> login(@RequestBody Map<String, Object> payload, HttpSession session) {
+    public ResponseEntity<Object> login(@RequestBody @Valid LoginForm loginForm, HttpSession session) {
 
-        System.out.println("username: " + payload.get("username"));
-        System.out.println("password: " + payload.get("password"));
+        System.out.println("/login");
+        System.out.println("username: " + loginForm.getUsername());
+        System.out.println("password: " + loginForm.getPassword());
 
-        String username = (String) payload.get("username");
-        String password = (String) payload.get("password");
-
-        return authenticationService.login(session, username, password);
+        return authenticationService.login(session, loginForm);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public ResponseEntity<Object> logout(HttpSession session) {
 
+        System.out.println("/logout");
         return authenticationService.logout(session);
     }
 }

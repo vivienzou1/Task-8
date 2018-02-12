@@ -4,6 +4,7 @@ package com.team3.task8.service.Imp;
 import com.team3.task8.domain.Fund;
 import com.team3.task8.domain.FundHold;
 import com.team3.task8.domain.User;
+import com.team3.task8.dto.BuyFundForm;
 import com.team3.task8.repositories.FundHoldRepository;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
@@ -41,17 +42,11 @@ public class BuyFundServiceImpl implements BuyFundService {
     }
 
     @Override
-    public ResponseEntity<Object> buyFund(HttpSession session, String symbol, String cashValue) {
+    @Transactional
+    public ResponseEntity<Object> buyFund(HttpSession session, BuyFundForm buyFundForm) {
+
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
-
-        // param check ???
-
-        // cash not double or more than two decimals
-        if (!paramCheck.isTwoDecimal(cashValue)) {
-            httpStatus = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(result, httpStatus);
-        }
 
         if (session.getAttribute("username") == null) {
 
@@ -72,9 +67,9 @@ public class BuyFundServiceImpl implements BuyFundService {
             } else {
 
                 double prevCash = Double.parseDouble(user.getCash());
-                double cashDouble = Double.parseDouble(cashValue);
+                double cashDouble = Double.parseDouble(buyFundForm.getCashValue());
 
-                Fund fund = fundRepository.findBySymbol(symbol);
+                Fund fund = fundRepository.findBySymbol(buyFundForm.getSymbol());
 
                 if (fund == null) {
 
@@ -88,7 +83,7 @@ public class BuyFundServiceImpl implements BuyFundService {
                     result.put("message", "You don’t have enough cash in your account to make this purchase");
                     httpStatus = HttpStatus.FORBIDDEN;
 
-                } else if (!paramCheck.isMultiple(prevCash, cashDouble)) {
+                } else if (cashDouble < Double.parseDouble(fund.getPrice())) {
 
                     // Not enough cash provided
                     result.put("message", "You didn’t provide enough cash to make this purchase");
@@ -99,6 +94,7 @@ public class BuyFundServiceImpl implements BuyFundService {
                     // Success Case
                     double price = Double.parseDouble(fund.getPrice());
                     int shares = (int) (cashDouble / price);
+                    cashDouble = shares * price;
 
                     FundHold fundHold;
                     if (fundHoldRepository.findByUsernameAndName(user.getUsername(), fund.getName()) == null) {
@@ -109,6 +105,7 @@ public class BuyFundServiceImpl implements BuyFundService {
                         double prevShare = Double.parseDouble(fundHold.getShares());
                         fundHoldRepository.updateSharesById(String.valueOf(prevShare + shares), fund.getId());
                     }
+
                     DecimalFormat df = new DecimalFormat("#.##");
                     userRepository.updateCashByUsername(df.format(prevCash - cashDouble), user.getUsername());
                     result.put("message", "The fund has been successfully purchased");

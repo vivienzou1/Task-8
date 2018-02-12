@@ -2,6 +2,7 @@ package com.team3.task8.service.Imp;
 
 
 import com.team3.task8.domain.User;
+import com.team3.task8.dto.CreateCustomerForm;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.BuyFundService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
@@ -33,27 +35,11 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
     }
 
     @Override
-    public ResponseEntity<Object> createCustomer(HttpSession session,
-                                                 String fname,
-                                          String lname,
-                                          String address,
-                                          String city,
-                                          String state,
-                                          String zip,
-                                          String email,
-                                          String cash,
-                                          String username,
-                                          String password) {
+    @Transactional
+    public ResponseEntity<Object> createCustomer(HttpSession session, CreateCustomerForm createCustomerForm) {
+
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
-
-        // param check ???
-
-        // cash not double or more than two decimals
-        if (!paramCheck.isTwoDecimal(cash)) {
-            httpStatus = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(result, httpStatus);
-        }
 
         if (session.getAttribute("username") == null) {
 
@@ -67,7 +53,7 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
             result.put("message", "You must be an employee to perform this action");
             httpStatus = HttpStatus.FORBIDDEN;
 
-        } else if (userRepository.findByUsername(username) != null) {
+        } else if (userRepository.findByUsername(createCustomerForm.getUsername()) != null) {
 
             // Duplicate username
             result.put("message", "The input you provided is not valid");
@@ -75,10 +61,28 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
 
         } else {
 
+            String cash = "0";
+            if (createCustomerForm.getCash() != null) {
+                cash = createCustomerForm.getCash();
+            }
+
             // Success Case
-            User user = new User(fname, lname, address, city, state, zip, email, cash, "customer", username, password);
+            User user = new User(
+                    createCustomerForm.getFname(),
+                    createCustomerForm.getLname(),
+                    createCustomerForm.getAddress(),
+                    createCustomerForm.getCity(),
+                    createCustomerForm.getState(),
+                    createCustomerForm.getZip(),
+                    createCustomerForm.getEmail(),
+                    cash,
+                    "customer",
+                    createCustomerForm.getUsername(),
+                    createCustomerForm.getPassword()
+            );
+
             userRepository.save(user);
-            result.put("message", fname + " was registered successfully");
+            result.put("message", createCustomerForm.getFname() + " was registered successfully");
 
         }
 

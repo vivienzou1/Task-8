@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -32,7 +33,9 @@ public class ViewPortfolioServiceImpl implements ViewPortfolioService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Object> viewPortfolio(HttpSession session) {
+
         JSONObject result = new JSONObject();
         List<JSONObject> funds = new ArrayList<JSONObject>();
         HttpStatus httpStatus = HttpStatus.OK;
@@ -45,7 +48,6 @@ public class ViewPortfolioServiceImpl implements ViewPortfolioService {
 
         } else {
 
-            // No Funds
             User user = userRepository.findByUsername((String) session.getAttribute("username"));
 
             if (!user.getRole().equals("customer")) {

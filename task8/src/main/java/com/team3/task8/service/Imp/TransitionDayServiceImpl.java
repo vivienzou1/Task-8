@@ -21,7 +21,6 @@ import java.util.Random;
 
 
 @Service
-@Transactional
 public class TransitionDayServiceImpl implements TransitionDayService {
 
     private final UserRepository userRepository;
@@ -34,7 +33,9 @@ public class TransitionDayServiceImpl implements TransitionDayService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Object> transitionDay(HttpSession session) {
+
         JSONObject result = new JSONObject();
         HttpStatus httpStatus = HttpStatus.OK;
 
@@ -68,6 +69,7 @@ public class TransitionDayServiceImpl implements TransitionDayService {
     }
 
     private double newPrice(double price) {
+
         double newPrice;
         double fluctuate;
         while (true) {
@@ -77,9 +79,11 @@ public class TransitionDayServiceImpl implements TransitionDayService {
                 break;
             }
         }
+
         System.out.println("prev price: " + price);
         System.out.println("fluctuate: " + fluctuate);
         System.out.println("new price: " + newPrice);
+
         return newPrice;
     }
 }
