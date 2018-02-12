@@ -16,9 +16,9 @@ public class SellFundForm {
     @NotNull
     private String symbol;
 
-    @NotNull
     @ShareCheck
     @Range(min = 1)
+    @NotNull
     private String numShares;
 
 }

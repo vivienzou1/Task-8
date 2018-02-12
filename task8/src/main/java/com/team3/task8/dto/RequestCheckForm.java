@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class RequestCheckForm {
 
-    @NotNull
     @CashCheck
+    @NotNull
     private String cashValue;
 
 }

@@ -14,8 +14,8 @@ public class BuyFundForm {
     @NotNull
     private String symbol;
 
-    @NotNull
     @CashCheck
+    @NotNull
     private String cashValue;
 
 }

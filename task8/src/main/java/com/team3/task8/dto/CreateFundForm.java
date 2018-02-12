@@ -17,8 +17,8 @@ public class CreateFundForm {
     @NotNull
     private String symbol;
 
-    @NotNull
     @CashCheck
+    @NotNull
     private String initialValue;
 
 }

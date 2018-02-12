@@ -14,8 +14,8 @@ public class DepositCheckForm {
     @NotNull
     private String username;
 
-    @NotNull
     @CashCheck
+    @NotNull
     private String cash;
 
 }
