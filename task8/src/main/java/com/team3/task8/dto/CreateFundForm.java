@@ -20,6 +20,6 @@ public class CreateFundForm {
 
     @CashCheck
     @NotBlank
-    private String initialValue;
+    private String initial_value;
 
 }

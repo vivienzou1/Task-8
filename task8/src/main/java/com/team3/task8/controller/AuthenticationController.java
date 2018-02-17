@@ -26,9 +26,9 @@ public class AuthenticationController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<Object> login(@RequestBody @Valid LoginForm loginForm, HttpSession session) {
 
-        System.out.println("/login");
-        System.out.println("username: " + loginForm.getUsername());
-        System.out.println("password: " + loginForm.getPassword());
+//        System.out.println("/login");
+//        System.out.println("username: " + loginForm.getUsername());
+//        System.out.println("password: " + loginForm.getPassword());
 
         return authenticationService.login(session, loginForm);
     }
@@ -36,7 +36,7 @@ public class AuthenticationController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public ResponseEntity<Object> logout(HttpSession session) {
 
-        System.out.println("/logout");
+//        System.out.println("/logout");
         return authenticationService.logout(session);
     }
 }

@@ -2,17 +2,16 @@ package com.team3.task8.service.Imp;
 
 
 import com.team3.task8.domain.Fund;
-import com.team3.task8.domain.User;
 import com.team3.task8.dto.CreateFundForm;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
-import com.team3.task8.service.CreateCustomerService;
 import com.team3.task8.service.CreateFundService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpSession;
 
 @Service
 public class CreateFundServiceImpl implements CreateFundService {
-
+    public static final Object lock = new Object();
     private final UserRepository userRepository;
     private final FundRepository fundRepository;
 
@@ -32,7 +31,7 @@ public class CreateFundServiceImpl implements CreateFundService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResponseEntity<Object> createFund(HttpSession session, CreateFundForm createFundForm) {
 
         JSONObject result = new JSONObject();
@@ -51,10 +50,13 @@ public class CreateFundServiceImpl implements CreateFundService {
 //            httpStatus = HttpStatus.FORBIDDEN;
 
         } else {
-
             // Success Case
-            Fund fund = new Fund(createFundForm.getName(), createFundForm.getSymbol(), createFundForm.getInitialValue());
-            fundRepository.save(fund);
+            synchronized (lock) {
+                if (fundRepository.findBySymbol(createFundForm.getSymbol()) == null) {
+                    Fund fund = new Fund(createFundForm.getName(), createFundForm.getSymbol(), createFundForm.getInitial_value());
+                    fundRepository.save(fund);
+                }
+            }
             result.put("message", "The fund was successfully created");
 
         }

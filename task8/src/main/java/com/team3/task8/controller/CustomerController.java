@@ -40,7 +40,7 @@ public class CustomerController {
     @RequestMapping(value = "/viewPortfolio", method = RequestMethod.GET)
     public ResponseEntity<Object> viewPortfolio(HttpSession session) {
 
-        System.out.println("/viewPortfolio");
+//        System.out.println("/viewPortfolio");
 
         return viewPortfolioService.viewPortfolio(session);
     }
@@ -48,9 +48,9 @@ public class CustomerController {
     @RequestMapping(value = "/buyFund", method = RequestMethod.POST)
     public ResponseEntity<Object> buyFund(@RequestBody @Valid BuyFundForm buyFundForm, HttpSession session) {
 
-        System.out.println("/buyFund");
-        System.out.println("symbol: " + buyFundForm.getSymbol());
-        System.out.println("cashValue: " + buyFundForm.getCashValue());
+//        System.out.println("/buyFund");
+//        System.out.println("symbol: " + buyFundForm.getSymbol());
+//        System.out.println("cashValue: " + buyFundForm.getCashValue());
 
         return buyFundService.buyFund(session, buyFundForm);
     }
@@ -58,9 +58,9 @@ public class CustomerController {
     @RequestMapping(value = "/sellFund", method = RequestMethod.POST)
     public ResponseEntity<Object> sellFund(@RequestBody @Valid SellFundForm sellFundForm, HttpSession session) {
 
-        System.out.println("/sellFund");
-        System.out.println("symbol: " + sellFundForm.getSymbol());
-        System.out.println("numShares: " + sellFundForm.getNumShares());
+//        System.out.println("/sellFund");
+//        System.out.println("symbol: " + sellFundForm.getSymbol());
+//        System.out.println("numShares: " + sellFundForm.getNumShares());
 
         return sellFundService.sellFund(session, sellFundForm);
     }
@@ -68,8 +68,8 @@ public class CustomerController {
     @RequestMapping(value = "/requestCheck", method = RequestMethod.POST)
     public ResponseEntity<Object> requestCheck(@RequestBody @Valid RequestCheckForm requestCheckForm, HttpSession session) {
 
-        System.out.println("/requestCheck");
-        System.out.println("cashValue: " + requestCheckForm.getCashValue());
+//        System.out.println("/requestCheck");
+//        System.out.println("cashValue: " + requestCheckForm.getCashValue());
 
         return requestCheckService.requestCheck(session, requestCheckForm);
     }
