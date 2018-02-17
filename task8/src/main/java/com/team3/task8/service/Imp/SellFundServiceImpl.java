@@ -10,7 +10,6 @@ import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.BuyFundService;
 import com.team3.task8.service.SellFundService;
-import com.team3.task8.util.ParamCheck;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,17 +28,14 @@ public class SellFundServiceImpl implements SellFundService {
     private final UserRepository userRepository;
     private final FundRepository fundRepository;
     private final FundHoldRepository fundHoldRepository;
-    private final ParamCheck paramCheck;
 
     @Autowired
     public SellFundServiceImpl(UserRepository userRepository,
                                FundRepository fundRepository,
-                               FundHoldRepository fundHoldRepository,
-                               ParamCheck paramCheck) {
+                               FundHoldRepository fundHoldRepository) {
         this.userRepository = userRepository;
         this.fundRepository = fundRepository;
         this.fundHoldRepository = fundHoldRepository;
-        this.paramCheck = paramCheck;
     }
 
     @Override
@@ -55,7 +51,7 @@ public class SellFundServiceImpl implements SellFundService {
 
             // Not Logged In
             result.put("message", "You are not currently logged in");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else {
 
@@ -65,7 +61,7 @@ public class SellFundServiceImpl implements SellFundService {
 
                 // Not customer
                 result.put("message", "You must be an customer to perform this action");
-                httpStatus = HttpStatus.FORBIDDEN;
+//                httpStatus = HttpStatus.FORBIDDEN;
 
             } else {
 
@@ -75,7 +71,7 @@ public class SellFundServiceImpl implements SellFundService {
 
                     // Fund doesn’t exist
                     result.put("message", "The fund you provided does not exist");
-                    httpStatus = HttpStatus.FORBIDDEN;
+//                    httpStatus = HttpStatus.FORBIDDEN;
 
                 } else {
 
@@ -85,7 +81,7 @@ public class SellFundServiceImpl implements SellFundService {
 
                         // Not enough shares
                         result.put("message", "You don’t have that many shares in your portfolio");
-                        httpStatus = HttpStatus.FORBIDDEN;
+//                        httpStatus = HttpStatus.FORBIDDEN;
 
                     } else {
 

@@ -38,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
             // Failure case
             result.put("message", "There seems to be an issue with the username/password combination that you entered");
-            httpStatus = httpStatus.FORBIDDEN;
+//            httpStatus = httpStatus.FORBIDDEN;
 
         } else {
 
@@ -62,7 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
             // Failure case
             result.put("message", "You are not currently logged in");
-            httpStatus = httpStatus.FORBIDDEN;
+//            httpStatus = httpStatus.FORBIDDEN;
 
         } else {
 

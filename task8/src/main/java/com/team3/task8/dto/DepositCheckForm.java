@@ -4,6 +4,7 @@ import com.team3.task8.validation.CashCheck;
 import com.team3.task8.validation.ShareCheck;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,11 +12,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class DepositCheckForm {
 
-    @NotNull
+    @NotBlank
     private String username;
 
     @CashCheck
-    @NotNull
+    @NotBlank
     private String cash;
 
 }

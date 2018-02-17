@@ -3,6 +3,7 @@ package com.team3.task8.dto;
 import com.team3.task8.validation.CashCheck;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
@@ -10,34 +11,34 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CreateCustomerForm {
 
-    @NotNull
+    @NotBlank
     private String fname;
 
-    @NotNull
+    @NotBlank
     private String lname;
 
-    @NotNull
+    @NotBlank
     private String address;
 
-    @NotNull
+    @NotBlank
     private String city;
 
-    @NotNull
+    @NotBlank
     private String state;
 
-    @NotNull
+    @NotBlank
     private String zip;
 
-    @NotNull
+    @NotBlank
     private String email;
 
     @CashCheck
     private String cash;
 
-    @NotNull
+    @NotBlank
     private String username;
 
-    @NotNull
+    @NotBlank
     private String password;
 
 }

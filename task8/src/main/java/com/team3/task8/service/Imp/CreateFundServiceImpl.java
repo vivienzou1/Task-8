@@ -8,7 +8,6 @@ import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.CreateCustomerService;
 import com.team3.task8.service.CreateFundService;
-import com.team3.task8.util.ParamCheck;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,15 +23,12 @@ public class CreateFundServiceImpl implements CreateFundService {
 
     private final UserRepository userRepository;
     private final FundRepository fundRepository;
-    private final ParamCheck paramCheck;
 
     @Autowired
     public CreateFundServiceImpl(UserRepository userRepository,
-                                 FundRepository fundRepository,
-                                 ParamCheck paramCheck) {
+                                 FundRepository fundRepository) {
         this.userRepository = userRepository;
         this.fundRepository = fundRepository;
-        this.paramCheck = paramCheck;
     }
 
     @Override
@@ -46,13 +42,13 @@ public class CreateFundServiceImpl implements CreateFundService {
 
             // Not Logged In
             result.put("message", "You are not currently logged in");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else if (!userRepository.findByUsername((String) session.getAttribute("username")).getRole().equals("Employee")) {
 
             // Not employee
             result.put("message", "You must be an employee to perform this action");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else {
 

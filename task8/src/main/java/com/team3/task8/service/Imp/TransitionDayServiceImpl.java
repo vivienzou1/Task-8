@@ -43,13 +43,13 @@ public class TransitionDayServiceImpl implements TransitionDayService {
 
             // Not Logged In
             result.put("message", "You are not currently logged in");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else if (!userRepository.findByUsername((String) session.getAttribute("username")).getRole().equals("Employee")) {
 
             // Not employee
             result.put("message", "You must be an employee to perform this action");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else {
 

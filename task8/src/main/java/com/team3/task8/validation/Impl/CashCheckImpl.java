@@ -15,8 +15,13 @@ public class CashCheckImpl implements ConstraintValidator<CashCheck, Object> {
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-        String cash = (String) o;
+        try {
+            String cash = (String) o;
+        } catch (Exception e) {
+            return true;
+        }
 
+        String cash = "";
         try {
             Double.parseDouble(cash);
         } catch (NumberFormatException e) {

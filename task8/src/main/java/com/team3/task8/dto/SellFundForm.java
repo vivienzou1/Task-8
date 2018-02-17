@@ -4,6 +4,7 @@ import com.team3.task8.validation.CashCheck;
 import com.team3.task8.validation.ShareCheck;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Digits;
@@ -13,12 +14,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class SellFundForm {
 
-    @NotNull
+    @NotBlank
     private String symbol;
 
     @ShareCheck
     @Range(min = 1)
-    @NotNull
+    @NotBlank
     private String numShares;
 
 }

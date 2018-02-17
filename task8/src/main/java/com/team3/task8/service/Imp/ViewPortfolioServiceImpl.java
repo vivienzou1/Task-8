@@ -44,7 +44,7 @@ public class ViewPortfolioServiceImpl implements ViewPortfolioService {
 
             // Not Logged In
             result.put("message", "You are not currently logged in");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else {
 
@@ -54,13 +54,13 @@ public class ViewPortfolioServiceImpl implements ViewPortfolioService {
 
                 // Not customer
                 result.put("message", "You must be a customer to perform this action");
-                httpStatus = HttpStatus.FORBIDDEN;
+//                httpStatus = HttpStatus.FORBIDDEN;
 
             } else if (fundHoldRepository.findByUsername(user.getUsername()).size() == 0) {
 
                 // No funds
                 result.put("message", "You don’t have any funds in your Portfolio");
-                httpStatus = HttpStatus.FORBIDDEN;
+//                httpStatus = HttpStatus.FORBIDDEN;
 
             } else {
 

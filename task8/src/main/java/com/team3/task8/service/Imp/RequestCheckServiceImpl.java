@@ -7,7 +7,6 @@ import com.team3.task8.repositories.FundHoldRepository;
 import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.RequestCheckService;
-import com.team3.task8.util.ParamCheck;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,13 +23,10 @@ import java.text.DecimalFormat;
 public class RequestCheckServiceImpl implements RequestCheckService {
 
     private final UserRepository userRepository;
-    private final ParamCheck paramCheck;
 
     @Autowired
-    public RequestCheckServiceImpl(UserRepository userRepository,
-                                   ParamCheck paramCheck) {
+    public RequestCheckServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.paramCheck = paramCheck;
     }
 
     @Override
@@ -45,7 +41,7 @@ public class RequestCheckServiceImpl implements RequestCheckService {
 
             // Not Logged In
             result.put("message", "You are not currently logged in");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else {
 
@@ -55,13 +51,13 @@ public class RequestCheckServiceImpl implements RequestCheckService {
 
                 // Not customer
                 result.put("message", "You must be a customer to perform this action");
-                httpStatus = HttpStatus.FORBIDDEN;
+//                httpStatus = HttpStatus.FORBIDDEN;
 
             } else if (Double.parseDouble(user.getCash()) < cashDouble) {
 
                 // Not enough cash
                 result.put("message", "You don’t have sufficient funds in your account to cover the requested check");
-                httpStatus = HttpStatus.FORBIDDEN;
+//                httpStatus = HttpStatus.FORBIDDEN;
 
             } else {
 

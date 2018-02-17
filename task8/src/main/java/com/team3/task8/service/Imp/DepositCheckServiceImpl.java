@@ -8,7 +8,6 @@ import com.team3.task8.repositories.FundRepository;
 import com.team3.task8.repositories.UserRepository;
 import com.team3.task8.service.DepositCheckService;
 import com.team3.task8.service.RequestCheckService;
-import com.team3.task8.util.ParamCheck;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,13 +23,10 @@ import java.text.DecimalFormat;
 public class DepositCheckServiceImpl implements DepositCheckService {
 
     private final UserRepository userRepository;
-    private final ParamCheck paramCheck;
 
     @Autowired
-    public DepositCheckServiceImpl(UserRepository userRepository,
-                                   ParamCheck paramCheck) {
+    public DepositCheckServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.paramCheck = paramCheck;
     }
 
     @Override
@@ -44,13 +40,13 @@ public class DepositCheckServiceImpl implements DepositCheckService {
 
             // Not Logged In
             result.put("message", "You are not currently logged in");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else if (!userRepository.findByUsername((String) session.getAttribute("username")).getRole().equals("Employee")) {
 
             // Not employee
             result.put("message", "You must be an employee to perform this action");
-            httpStatus = HttpStatus.FORBIDDEN;
+//            httpStatus = HttpStatus.FORBIDDEN;
 
         } else {
 
