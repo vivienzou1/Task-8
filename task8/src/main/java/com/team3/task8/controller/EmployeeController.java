@@ -61,9 +61,9 @@ public class EmployeeController {
     @RequestMapping(value = "/depositCheck", method = RequestMethod.POST)
     public ResponseEntity<Object> depositCheck(@RequestBody @Valid DepositCheckForm depositCheckForm, HttpSession session) {
 
-        //System.out.println("/depositCheck");
-        //System.out.println("username: " + depositCheckForm.getUsername());
-        //System.out.println("cash: " + depositCheckForm.getCash());
+//        System.out.println("/depositCheck");
+//        System.out.println("username: " + depositCheckForm.getUsername());
+//        System.out.println("cash: " + depositCheckForm.getCash());
 
         return depositCheckService.depositCheck(session, depositCheckForm);
     }
@@ -71,10 +71,10 @@ public class EmployeeController {
     @RequestMapping(value = "/createFund", method = RequestMethod.POST)
     public ResponseEntity<Object> createFund(@RequestBody @Valid CreateFundForm createFundForm, HttpSession session) {
 
-        //System.out.println("/createFund");
-        //System.out.println("name: " + createFundForm.getName());
-        //System.out.println("symbol: " + createFundForm.getSymbol());
-        //System.out.println("initial_value: " + createFundForm.getInitial_value());
+//        System.out.println("/createFund");
+//        System.out.println("name: " + createFundForm.getName());
+//        System.out.println("symbol: " + createFundForm.getSymbol());
+//        System.out.println("initial_value: " + createFundForm.getInitial_value());
 
         return createFundService.createFund(session, createFundForm);
     }

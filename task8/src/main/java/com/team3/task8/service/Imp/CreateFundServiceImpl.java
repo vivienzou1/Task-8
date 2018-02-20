@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 
 @Service
 public class CreateFundServiceImpl implements CreateFundService {
-    public static final Object lock = new Object();
+    private static final Object lock = new Object();
     private final UserRepository userRepository;
     private final FundRepository fundRepository;
 
@@ -60,7 +60,9 @@ public class CreateFundServiceImpl implements CreateFundService {
             result.put("message", "The fund was successfully created");
 
         }
-
+        System.err.println("this is CreateFund");
+        System.err.println("message is : " + result.toString());
+        System.err.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 }

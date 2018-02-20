@@ -48,7 +48,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             result.put("message", "Welcome " + user.getFname());
 
         }
-
+        System.out.println("this is login");
+        System.out.println("message is : " + result.toString());
+        System.out.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 
@@ -73,6 +75,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
         }
 
+        System.err.println("this is logout");
+        System.err.println("message is : " + result.toString());
+        System.err.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 }

@@ -65,6 +65,9 @@ public class DepositCheckServiceImpl implements DepositCheckService {
 
         }
 
+        System.err.println("this is DepositCheck");
+        System.err.println("message is : " + result.toString());
+        System.err.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 }

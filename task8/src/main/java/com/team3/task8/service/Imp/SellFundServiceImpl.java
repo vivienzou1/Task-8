@@ -103,6 +103,9 @@ public class SellFundServiceImpl implements SellFundService {
             }
         }
 
+        System.err.println("this is SellFund");
+        System.err.println("message is : " + result.toString());
+        System.err.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 }

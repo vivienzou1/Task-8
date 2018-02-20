@@ -79,6 +79,9 @@ public class ViewPortfolioServiceImpl implements ViewPortfolioService {
             }
         }
 
+        System.err.println("this is viewPortfolio");
+        System.err.println("message is : " + result.toString());
+        System.err.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 }

@@ -33,6 +33,7 @@ public class CashCheckImpl implements ConstraintValidator<CashCheck, Object> {
         try {
             Double.parseDouble(cash);
         } catch (NumberFormatException e) {
+            System.err.println("Cash check invalid");
             return false;
         }
 
@@ -40,7 +41,7 @@ public class CashCheckImpl implements ConstraintValidator<CashCheck, Object> {
         {
             return true;
         }
-
+        System.err.println("Cash check invalid");
         return false;
     }
 }

@@ -108,7 +108,9 @@ public class BuyFundServiceImpl implements BuyFundService {
                 }
             }
         }
-
+        System.err.println("this is buyFund");
+        System.err.println("message is : " + result.toString());
+        System.err.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 }

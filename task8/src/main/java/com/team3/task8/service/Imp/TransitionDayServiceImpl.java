@@ -65,7 +65,9 @@ public class TransitionDayServiceImpl implements TransitionDayService {
             result.put("message", "The fund prices have been successfully recalculated");
 
         }
-
+        System.err.println("this is Transition Day");
+        System.err.println("message is : " + result.toString());
+        System.err.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 

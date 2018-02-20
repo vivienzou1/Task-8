@@ -56,8 +56,9 @@ public class RequestCheckServiceImpl implements RequestCheckService {
             } else if (Double.parseDouble(user.getCash()) < cashDouble) {
 
                 // Not enough cash
-                result.put("message", "You don’t have sufficient funds in your account to cover the requested check");
+                result.put("message", "You don't have sufficient funds in your account to cover the requested check");
 //                httpStatus = HttpStatus.FORBIDDEN;
+                System.out.println("I am hererererererer");
 
             } else {
 
@@ -69,6 +70,9 @@ public class RequestCheckServiceImpl implements RequestCheckService {
             }
         }
 
+        System.err.println("this is RequestCheck");
+        System.err.println("message is : " + result.toString());
+        System.err.println("httpStatus is : " + httpStatus.toString());
         return new ResponseEntity<>(result, httpStatus);
     }
 }
